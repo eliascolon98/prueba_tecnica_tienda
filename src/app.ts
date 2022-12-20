@@ -10,6 +10,7 @@ const app = express();
 
 app.use(cors());
 app.use(morgan('dev'));
+// app.use(express.request('Auth'));
 app.use(express.json());
 app.use(getProducts);
 app.use(getRoles);

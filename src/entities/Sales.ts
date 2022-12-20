@@ -5,7 +5,8 @@ import {
     BaseEntity,
     CreateDateColumn,
     OneToOne,
-    JoinColumn
+    JoinColumn,
+    ManyToOne
 } from 'typeorm'
 
 import { Users } from './Users';
@@ -13,7 +14,7 @@ import { Products } from './Product';
 
 @Entity()
 export class Sales extends BaseEntity{
-    
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -23,8 +24,7 @@ export class Sales extends BaseEntity{
     @CreateDateColumn()
     sale_at: Date;
 
-    @OneToOne(() => Users)
-    @JoinColumn()
+    @ManyToOne(() => Users, (users) => users.id)
     users: Users
 
     @OneToOne(() => Products)
