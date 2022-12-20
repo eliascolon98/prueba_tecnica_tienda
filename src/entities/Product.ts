@@ -13,10 +13,10 @@ export class Products extends BaseEntity{
     @Column()
     name: string
 
-    @Column({unique: true})
+    @Column()
     price: number
 
-    @Column({unique: true})
+    @Column()
     description: string
 
 }

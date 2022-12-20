@@ -17,7 +17,7 @@ export class Users extends BaseEntity{
     @Column({unique: true})
     document: number
 
-    @Column({unique: true})
+    @Column()
     name: string
 
     @Column()
@@ -28,6 +28,3 @@ export class Users extends BaseEntity{
     roles: Roles
 
 }
-
-// @CreateDateColumn()
-// createat: Date;
