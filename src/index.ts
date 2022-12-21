@@ -7,7 +7,7 @@ const main = async () =>{
         app.listen(3000);
         console.log('listening on port 3000');
         AppDataSource.initialize();
-        console.log("Base de datos conecttada...");
+        console.log("Base de datos conectada...");
     } catch (error) {
         console.log(error)
     }

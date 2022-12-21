@@ -3,6 +3,10 @@ import { Roles } from '../entities/Roles';
 
 export const createRol = async (req: Request, res: Response) => {
     try {
+
+        if (validatePermission(req.headers.auth, 'save') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'save') == 403) return res.status(403).json({ message: "User is not authorized" });
+
         const {  name} = req.body;
         const rol = new Roles()
 
@@ -21,6 +25,9 @@ export const createRol = async (req: Request, res: Response) => {
 
 export const getRoles = async (req: Request, res: Response) => {
     try {
+
+        if (validatePermission(req.headers.auth, 'list') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'list') == 403) return res.status(403).json({ message: "User is not authorized" });
      
         const rol = await Roles.find()
         return res.json(rol);
@@ -35,6 +42,9 @@ export const getRoles = async (req: Request, res: Response) => {
 
 export const updateRol = async (req: Request, res: Response) => {
     try {
+
+        if (validatePermission(req.headers.auth, 'update') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'update') == 403) return res.status(403).json({ message: "User is not authorized" });
 
         const id = req.params.id;
 
@@ -54,6 +64,10 @@ export const updateRol = async (req: Request, res: Response) => {
 
 export const deleteRol = async (req: Request, res: Response) => {
     try {
+
+        if (validatePermission(req.headers.auth, 'delete') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'delete') == 403) return res.status(403).json({ message: "User is not authorized" });
+
         const id = req.params.id;
         const rol = await Roles.findOneBy({id: parseInt(id)});
         if (!rol) return res.status(404).json({message: 'Rol not found'});
@@ -70,6 +84,10 @@ export const deleteRol = async (req: Request, res: Response) => {
 
 export const getRol = async (req: Request, res: Response) => {
     try {
+
+        if (validatePermission(req.headers.auth, 'list') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'list') == 403) return res.status(403).json({ message: "User is not authorized" });
+
         const id = req.params.id;
         const rol = await Roles.findOneBy({id: parseInt(id)});
         if (!rol) return res.status(404).json({message: 'Rol not found'});
@@ -81,4 +99,18 @@ export const getRol = async (req: Request, res: Response) => {
         }
        
     }
+}
+
+const validatePermission = (user: any, option: string) => {
+
+    if (user === "" || user === undefined) {
+        return 401;
+    }else if(user  !== "1"){
+        return 403;
+    }else{
+        if(option == "update" || option == "delete" || option == "list"){
+            return 403;
+        }
+    }    
+
 }

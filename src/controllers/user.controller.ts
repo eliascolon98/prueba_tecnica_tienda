@@ -3,6 +3,10 @@ import { Users } from '../entities/Users';
 
 export const createUser = async (req: Request, res: Response) => {
     try {
+
+        if (validatePermission(req.headers.auth, 'save') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'save') == 403) return res.status(403).json({ message: "User is not authorized" });
+
         const { document, name, lastname, roles_id } = req.body;
         const user = new Users()
 
@@ -26,6 +30,9 @@ export const createUser = async (req: Request, res: Response) => {
 export const getUsers = async (req: Request, res: Response) => {
     try {
      
+        if (validatePermission(req.headers.auth, 'list') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'list') == 403) return res.status(403).json({ message: "User is not authorized" });
+
         const users = await Users.find()
         return res.json(users);
 
@@ -40,6 +47,9 @@ export const getUsers = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
     try {
       
+        if (validatePermission(req.headers.auth, 'update') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'update') == 403) return res.status(403).json({ message: "User is not authorized" });
+
         const id = req.params.id;
 
         const user = await Users.findOneBy({id: parseInt(id)});
@@ -58,6 +68,10 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
+
+        if (validatePermission(req.headers.auth, 'delete') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'delete') == 403) return res.status(403).json({ message: "User is not authorized" });
+
         const id = req.params.id;
         const user = await Users.findOneBy({id: parseInt(id)});
         if (!user) return res.status(404).json({message: 'Users not found'});
@@ -74,6 +88,10 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
     try {
+
+        if (validatePermission(req.headers.auth, 'list') == 401) return res.status(401).json({ message: "Please add an authentication" });
+        if (validatePermission(req.headers.auth, 'list') == 403) return res.status(403).json({ message: "User is not authorized" });
+
         const id = req.params.id;
         const user = await Users.findOneBy({id: parseInt(id)});
         if (!user) return res.status(404).json({message: 'Users not found'});
@@ -85,4 +103,14 @@ export const getUser = async (req: Request, res: Response) => {
         }
        
     }
+}
+
+const validatePermission = (user: any, option: string) => {
+
+    if (user === "" || user === undefined) {
+        return 401;
+    }else if(user  !== "1"){
+        return 403;
+    }
+
 }
