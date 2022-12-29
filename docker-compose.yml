@@ -10,23 +10,16 @@ services:
       - POSTGRES_DB=tiendabd
     ports: 
       - 5432:5432
-  nodeapp:
+  appbackend:
     build:
       context: ./
       dockerfile: Dockerfile
     image: node
-    container_name: 'app_tienda'
+    container_name: 'appbackend'
     environment: 
-      # - DB_HOST=
-      DATABASE_URL: "postgres://postgres:eliascolon98@db:5432/tiendabd"
+      - DB_HOST=postgresql
     restart: always
     ports:
       - "3000:3000"
     depends_on: 
       - postgresql
-    working_dir: /home/node/app
-    volumes:
-      - ./:/home/node/app
-# volumes:
-#   postgresql:
-#     external: false
