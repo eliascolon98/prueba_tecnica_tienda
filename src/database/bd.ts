@@ -6,7 +6,7 @@ import { Sales } from '../entities/Sales';
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
-    host: 'localhost',
+    host: 'postgresql',
     username: 'postgres',
     password: 'eliascolon98',
     port: 5432,
